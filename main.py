@@ -1,4 +1,7 @@
+from flask import Flask, render_template
 import requests
+app = Flask(__name__)
+
 
 @app.route('/write_file')
 def write_file():
@@ -11,4 +14,6 @@ def write_file():
         return 'Text written to the file successfully.'
     else:
         return 'Error writing text to the file.'
+if __name__ == '__main__':
+    app.run()
 
