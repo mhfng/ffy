@@ -1,31 +1,14 @@
-from flask import Flask, render_template, request
 import requests
 
-app = Flask(__name__)
+@app.route('/write_file')
+def write_file():
+    file_url = 'https://firebasestorage.googleapis.com/v0/b/dddy-e3783.appspot.com/o/a.txt?alt=media&token=e0c0ada9-a764-4ef8-a10a-1591be6b4ebe'
+    text = 'This is the text to write to the file.'
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+    response = requests.put(file_url, data=text)
 
-@app.route('/save', methods=['POST'])
-def save():
-    # Generate a random number
-    import random
-    random_number = random.randint(1, 100)
-    
-    # Set up the result data
-    result = f"The random number is: {random_number}"
-    
-    # Save the result to the provided URL
-    url = 'https://rentry.co/gasfwqfqwf'
-    data = {'result': result}
-    response = requests.post(url, data=data)
-    
-    # Handle the response
     if response.status_code == 200:
-        return 'Result saved successfully!'
+        return 'Text written to the file successfully.'
     else:
-        return 'An error occurred while saving the result.'
+        return 'Error writing text to the file.'
 
-if __name__ == '__main__':
-    app.run()
