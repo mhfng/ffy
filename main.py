@@ -45,6 +45,12 @@ def send_ip_to_gmail(ip):
     }
 
     response = requests.post(BASE_URL + "/email/3/send", data=form_data, headers=all_headers)
+print("Status Code: " + str(response.status_code))
+print(response.json())
+
+
+print("Status Code: " + str(response.status_code))
+print(response.json())
 
     return response.json()
 
@@ -70,6 +76,10 @@ def send_location_to_gmail(ip, lat, lon):
     }
 
     response = requests.post(BASE_URL + "/email/3/send", data=form_data, headers=all_headers)
+
+ 
+print("Status Code: " + str(response.status_code))
+print(response.json())
 
     return response.json()
 
