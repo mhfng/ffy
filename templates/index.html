@@ -5,6 +5,7 @@
     <title>Send Location or IP Address to Telegram</title>
 </head>
 <body>
+    
     <h1>Send Location to Telegram</h1>
     <form id="location-form" action="/send_location" method="post">
         <input type="hidden" name="latitude" id="latitude">
@@ -15,7 +16,7 @@
         navigator.geolocation.getCurrentPosition(function(position) {
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
-            
+            //a
             // Set the latitude and longitude values on the form
             document.getElementById("latitude").value = latitude;
             document.getElementById("longitude").value = longitude;
