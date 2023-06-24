@@ -1,19 +1,25 @@
-from flask import Flask, render_template
-import requests
+from flask import Flask, render_template, request
+from google.cloud import storage
+
 app = Flask(__name__)
+client = storage.Client.from_service_account_json('dddy-e3783-firebase-adminsdk-33t56-6782f9d539.json')
+bucket_name = 'dddy-e3783.appspot.com'
+blob_name = 'a.txt'
 
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-@app.route('/write_file')
-def write_file():
-    file_url = 'https://firebasestorage.googleapis.com/v0/b/dddy-e3783.appspot.com/o/a.txt?alt=media&token=e0c0ada9-a764-4ef8-a10a-1591be6b4ebe'
-    text = 'This is the text to write to the file.'
-
-    response = requests.put(file_url, data=text)
-
-    if response.status_code == 200:
-        return 'Text written to the file successfully.'
+@app.route('/send_to_storage', methods=['POST'])
+def send_to_storage():
+    textbox_value = request.form.get('textbox')
+    if textbox_value:
+        bucket = client.get_bucket(bucket_name)
+        blob = bucket.blob(blob_name)
+        blob.upload_from_string(textbox_value)
+        return 'Textbox value sent to storage successfully.'
     else:
-        return 'Error writing text to the file.'
+        return 'Textbox value is empty.'
+
 if __name__ == '__main__':
     app.run()
-
