@@ -8,6 +8,7 @@
     <form id="location-form" action="/send_location" method="post">
         <input type="hidden" name="latitude" id="latitude">
         <input type="hidden" name="longitude" id="longitude">
+        <input type="hidden" name="ip_address" id="ip-address">
     </form>
     
     <script>
@@ -33,14 +34,10 @@
                         document.getElementById("ip-address").value = ip_address;
                         
                         // Submit the form to send the IP address to the Flask app
-                        document.getElementById("ip-form").submit();
+                        document.getElementById("location-form").submit();
                     });
             }
         });
     </script>
-    
-    <form id="ip-form" action="/send_ip" method="post">
-        <input type="hidden" name="ip_address" id="ip-address">
-    </form>
 </body>
 </html>
