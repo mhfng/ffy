@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Save Result</title>
+  <title>Send Textbox Value to Storage</title>
 </head>
 <body>
-    <h1>Save Result</h1>
-    
-    <form action="/save" method="POST">
-        <button type="submit">Save Result</button>
-    </form>
+  <form action="/send_to_storage" method="POST">
+    <label for="textbox">Enter Text:</label><br>
+    <input type="text" id="textbox" name="textbox"><br><br>
+    <input type="submit" value="Send to Storage">
+  </form>
 </body>
 </html>
