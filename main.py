@@ -1,7 +1,3 @@
-localipy
-373715044
-5412336519:AAH-HGiiJJ-AZE3D5FF9457pJACcT-jbqQg
-
 
 
 from flask import Flask, render_template, request
