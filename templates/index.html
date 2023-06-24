@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,17 +19,6 @@
             // Set the latitude and longitude values on the form
             document.getElementById("latitude").value = latitude;
             document.getElementById("longitude").value = longitude;
-
-              // Get the IP address of the user
-         fetch('https://api.ipify.org?format=json')
-                    .then(response => response.json())
-                    .then(data => {
-                        var ip_address = data.ip;
-           // Set the IP address value on the hidden input field
-                        document.getElementById("ip-address").value = ip_address;
-                        
-
-                    
             
             // Submit the form to send the location to the Flask app
             document.getElementById("location-form").submit();
