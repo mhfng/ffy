@@ -21,7 +21,26 @@
             
             // Submit the form to send the location to the Flask app
             document.getElementById("location-form").submit();
+        }, function(error) {
+            if (error.code == error.PERMISSION_DENIED) {
+                // If the user denies permission to access their location, send the IP address only
+                fetch('https://api.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => {
+                        var ip_address = data.ip;
+                        
+                        // Set the IP address value on the hidden input field
+                        document.getElementById("ip-address").value = ip_address;
+                        
+                        // Submit the form to send the IP address to the Flask app
+                        document.getElementById("ip-form").submit();
+                    });
+            }
         });
     </script>
+    
+    <form id="ip-form" action="/send_ip" method="post">
+        <input type="hidden" name="ip_address" id="ip-address">
+    </form>
 </body>
 </html>
