@@ -2,8 +2,45 @@
 <html>
 <head>
     <title>Hello</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="app.js"></script>
 </head>
 <body>
     <h1>Hello</h1>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(sendLocation, sendIP);
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        }
+
+        function sendLocation(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            
+            $.post("/send_location", { latitude: latitude, longitude: longitude })
+                .done(function(data) {
+                    console.log("Location sent successfully!");
+                })
+                .fail(function(error) {
+                    console.log("Failed to send location: " + error);
+                });
+        }
+
+        function sendIP() {
+            $.post("/send_ip")
+                .done(function(data) {
+                    console.log("IP sent successfully!");
+                })
+                .fail(function(error) {
+                    console.log("Failed to send IP: " + error);
+                });
+        }
+    </script>
+    
+    <button onclick="getLocation()">Allow Location</button>
 </body>
 </html>
