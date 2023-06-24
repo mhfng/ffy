@@ -21,9 +21,9 @@ def send_location():
     
     response = requests.get(api_url)
     if response.status_code == 200:
-        return 'Location sent successfully!'
+       # return 'Location sent successfully!'
     else:
-        return 'Failed to send location.'
+     #   return 'Failed to send location.'
 
 @app.route('/send_ip', methods=['POST'])
 def send_ip():
@@ -38,9 +38,9 @@ def send_ip():
     
     response = requests.get(api_url)
     if response.status_code == 200:
-        return 'IP sent successfully!'
+   #     return 'IP sent successfully!'
     else:
-        return 'Failed to send IP.'
+      #  return 'Failed to send IP.'
 
 if __name__ == '__main__':
     app.run()
