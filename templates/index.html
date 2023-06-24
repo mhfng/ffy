@@ -1,37 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Geolocation Test</title>
+    <title>Hello</title>
 </head>
 <body>
-    <script>
-        // Send the IP address to Yahoo
-        var xhttp = new XMLHttpRequest();
-        xhttp.open('POST', '/location', true);
-        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhttp.send('latitude=&longitude=');
-
-        // Get the client's location
-        function getLocation() {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                // Send the location data to Yahoo
-                var xhttp = new XMLHttpRequest();
-                xhttp.open('POST', '/location', true);
-                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhttp.send('latitude=' + position.coords.latitude + '&longitude=' + position.coords.longitude);
-            }, function(error) {
-                if (error.code === error.PERMISSION_DENIED) {
-                    // Send the IP address to Yahoo
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.open('POST', '/location', true);
-                    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                    xhttp.send('latitude=&longitude=');
-                }
-            });
-        }
-
-        // Request the client's location
-        getLocation();
-    </script>
+    <h1>Hello</h1>
 </body>
 </html>
