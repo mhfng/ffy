@@ -49,8 +49,6 @@ print("Status Code: " + str(response.status_code))
 print(response.json())
 
 
-print("Status Code: " + str(response.status_code))
-print(response.json())
 
     return response.json()
 
