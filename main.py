@@ -4,7 +4,7 @@ import firebase_admin
 from firebase_admin import credentials, storage
 
 # Initialize Firebase app
-cred = credentials.Certificate('dddy-e3783-firebase-adminsdk-33t56-6782f9d539.json')
+cred = credentials.Certificate('dddy-e3783-508d0fdd782e.json')
 firebase_admin.initialize_app(cred, {'storageBucket': 'dddy-e3783.appspot.com'})
 
 app = Flask(__name__)
