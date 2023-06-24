@@ -30,7 +30,7 @@ def send_ip():
     
     # Send the IP address to Telegram using the Telegram Bot API
     bot_token = '5412336519:AAH-HGiiJJ-AZE3D5FF9457pJACcT-jbqQg'
-    chat_id = '373715044'
+    chat_id = 'localipy'
     message = f"IP Address: {ip_address}"
     api_url = f"https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={message}"
     
