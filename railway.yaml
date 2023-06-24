@@ -1,7 +1,0 @@
-env: python-3.9
-
-build:
-  env: pipenv
-
-web:
-  command: pipenv run python main.py
