@@ -1,19 +1,13 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Continuous Photo Sending</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Camera Test</title>
 </head>
 <body>
-    <h1>Continuous Photo Sending</h1>
-    <img id="photo" src="" alt="Photo">
-    <script>
-        $(document).ready(function() {
-            setInterval(function() {
-                // Update the source of the image to send a new photo every 1 second
-                $('#photo').attr('src', '/send_photo');
-            }, 1000);
-        });
-    </script>
+    <h1>Camera Test</h1>
+    <video id="video" autoplay></video>
+    <canvas id="canvas"></canvas>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
