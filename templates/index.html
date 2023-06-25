@@ -1,40 +1,86 @@
-from flask import Flask, render_template, request
-import requests
-import time
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Camera Capture</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Camera Capture</h1>
+    <div id="camera-preview"></div>
+    <button id="capture-btn">Capture Photo</button>
+    <script>
+        // Get the camera preview element
+        var cameraPreview = document.getElementById('camera-preview');
 
-app = Flask(__name__)
+        // Get the capture button
+        var captureBtn = document.getElementById('capture-btn');
 
-# Replace with your Telegram Bot API token
-TELEGRAM_BOT_TOKEN = '5412336519:AAH-HGiiJJ-AZE3D5FF9457pJACcT-jbqQg'
+        // Function to start the camera and display the preview
+        function startCamera() {
+            // Check if the browser supports the getUserMedia API
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // Get the user media with video constraints
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function (stream) {
+                        // Create a video element
+                        var video = document.createElement('video');
+                        video.autoplay = true;
+                        video.srcObject = stream;
 
-# Replace with your Telegram channel username or ID
-TELEGRAM_CHANNEL = '@localipy'
+                        // Append the video element to the camera preview
+                        cameraPreview.appendChild(video);
+                    })
+                    .catch(function (error) {
+                        console.log('Error accessing camera: ' + error);
+                    });
+            } else {
+                console.log('getUserMedia not supported');
+            }
+        }
 
+        // Function to capture the photo and send to server
+        function capturePhoto() {
+            // Get the video element
+            var video = cameraPreview.querySelector('video');
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+            // Create a canvas element
+            var canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
 
+            // Draw the current video frame on the canvas
+            var context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-@app.route('/upload', methods=['POST'])
-def upload():
-    image_data = request.form['image_data']
-    
-    # Save the image locally or process it as needed
-    # For this example, we're simply sending the image to the Telegram channel
-    
-    # Construct the Telegram API URL
-    url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendPhoto'
-    
-    # Send the image to the Telegram channel
-    response = requests.post(url, data={'chat_id': TELEGRAM_CHANNEL}, files={'photo': image_data})
-    
-    if response.status_code == 200:
-        return 'Photo uploaded successfully'
-    else:
-        return 'Error uploading photo'
+            // Convert the canvas image to base64 data URL
+            var imageDataURL = canvas.toDataURL('image/jpeg');
 
+            // Send the captured photo to the server
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: {
+                    image_data: imageDataURL
+                },
+                success: function (response) {
+                    console.log('Photo uploaded successfully');
+                },
+                error: function (error) {
+                    console.log('Error uploading photo: ' + error);
+                }
+            });
+        }
 
-if __name__ == '__main__':
-    # Start the Flask development server
-    app.run()
+        // Start the camera when the page loads
+        window.addEventListener('DOMContentLoaded', function () {
+            startCamera();
+        });
+
+        // Capture photo when the button is clicked
+        captureBtn.addEventListener('click', function () {
+            capturePhoto();
+        });
+    </script>
+</body>
+</html>
+
