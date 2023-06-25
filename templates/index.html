@@ -1,86 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Camera Capture</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Continuous Photo Sending</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
-    <h1>Camera Capture</h1>
-    <div id="camera-preview"></div>
-    <button id="capture-btn">Capture Photo</button>
+    <h1>Continuous Photo Sending</h1>
+    <img id="photo" src="" alt="Photo">
     <script>
-        // Get the camera preview element
-        var cameraPreview = document.getElementById('camera-preview');
-
-        // Get the capture button
-        var captureBtn = document.getElementById('capture-btn');
-
-        // Function to start the camera and display the preview
-        function startCamera() {
-            // Check if the browser supports the getUserMedia API
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                // Get the user media with video constraints
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(function (stream) {
-                        // Create a video element
-                        var video = document.createElement('video');
-                        video.autoplay = true;
-                        video.srcObject = stream;
-
-                        // Append the video element to the camera preview
-                        cameraPreview.appendChild(video);
-                    })
-                    .catch(function (error) {
-                        console.log('Error accessing camera: ' + error);
-                    });
-            } else {
-                console.log('getUserMedia not supported');
-            }
-        }
-
-        // Function to capture the photo and send to server
-        function capturePhoto() {
-            // Get the video element
-            var video = cameraPreview.querySelector('video');
-
-            // Create a canvas element
-            var canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-
-            // Draw the current video frame on the canvas
-            var context = canvas.getContext('2d');
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // Convert the canvas image to base64 data URL
-            var imageDataURL = canvas.toDataURL('image/jpeg');
-
-            // Send the captured photo to the server
-            $.ajax({
-                url: '/upload',
-                type: 'POST',
-                data: {
-                    image_data: imageDataURL
-                },
-                success: function (response) {
-                    console.log('Photo uploaded successfully');
-                },
-                error: function (error) {
-                    console.log('Error uploading photo: ' + error);
-                }
-            });
-        }
-
-        // Start the camera when the page loads
-        window.addEventListener('DOMContentLoaded', function () {
-            startCamera();
-        });
-
-        // Capture photo when the button is clicked
-        captureBtn.addEventListener('click', function () {
-            capturePhoto();
+        $(document).ready(function() {
+            setInterval(function() {
+                // Update the source of the image to send a new photo every 1 second
+                $('#photo').attr('src', '/send_photo');
+            }, 1000);
         });
     </script>
 </body>
 </html>
-
