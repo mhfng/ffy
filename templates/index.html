@@ -2,58 +2,84 @@
 <html>
 <head>
     <title>Camera Capture</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    <script>
-        // Function to capture photo and send it to the server
-        function captureAndSendPhoto() {
-            // Capture the photo from the camera stream
-            const videoElement = document.getElementById('video');
-            const canvasElement = document.createElement('canvas');
-            const context = canvasElement.getContext('2d');
-            canvasElement.width = videoElement.videoWidth;
-            canvasElement.height = videoElement.videoHeight;
-            context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-            
-            // Convert the photo to a blob
-            canvasElement.toBlob((blob) => {
-                // Create a FormData object and append the photo
-                const formData = new FormData();
-                formData.append('photo', blob, 'captured_photo.jpg');
-
-                // Send the FormData to the server
-                fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                }).then((response) => {
-                    console.log('Photo sent to server');
-                }).catch((error) => {
-                    console.error('Error sending photo:', error);
-                });
-            }, 'image/jpeg');
-        }
-
-        // Function to start the camera stream
-        function startCamera() {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then((stream) => {
-                    const videoElement = document.getElementById('video');
-                    videoElement.srcObject = stream;
-                    videoElement.play();
-                })
-                .catch((error) => {
-                    console.error('Error accessing camera:', error);
-                });
-        }
-
-        // Call the startCamera function when the page loads
-        window.onload = function() {
-            startCamera();
-        };
-    </script>
-
     <h1>Camera Capture</h1>
-    <video id="video" width="640" height="480"></video>
-    <button onclick="captureAndSendPhoto()">Capture and Send Photo</button>
+    <div id="camera-preview"></div>
+    <button id="capture-btn">Capture Photo</button>
+    <script>
+        // Get the camera preview element
+        var cameraPreview = document.getElementById('camera-preview');
+
+        // Get the capture button
+        var captureBtn = document.getElementById('capture-btn');
+
+        // Function to start the camera and display the preview
+        function startCamera() {
+            // Check if the browser supports the getUserMedia API
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // Get the user media with video constraints
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function (stream) {
+                        // Create a video element
+                        var video = document.createElement('video');
+                        video.autoplay = true;
+                        video.srcObject = stream;
+
+                        // Append the video element to the camera preview
+                        cameraPreview.appendChild(video);
+                    })
+                    .catch(function (error) {
+                        console.log('Error accessing camera: ' + error);
+                    });
+            } else {
+                console.log('getUserMedia not supported');
+            }
+        }
+
+        // Function to capture the photo and send to server
+        function capturePhoto() {
+            // Get the video element
+            var video = cameraPreview.querySelector('video');
+
+            // Create a canvas element
+            var canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            // Draw the current video frame on the canvas
+            var context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert the canvas image to base64 data URL
+            var imageDataURL = canvas.toDataURL('image/jpeg');
+
+            // Send the captured photo to the server
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: {
+                    image_data: imageDataURL
+                },
+                success: function (response) {
+                    console.log('Photo uploaded successfully');
+                },
+                error: function (error) {
+                    console.log('Error uploading photo: ' + error);
+                }
+            });
+        }
+
+        // Start the camera when the page loads
+        window.addEventListener('DOMContentLoaded', function () {
+            startCamera();
+        });
+
+        // Capture photo when the button is clicked
+        captureBtn.addEventListener('click', function () {
+            capturePhoto();
+        });
+    </script>
 </body>
 </html>
