@@ -2,3 +2,4 @@ Flask
 gunicorn
 python-telegram-bot>=13.0
 requests
+opencv-python==4.5.3.56
