@@ -1,13 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Send Textbox Value to Storage</title>
+    <title>Camera Capture</title>
 </head>
 <body>
-  <form action="/send_to_storage" method="POST">
-    <label for="textbox">Enter Text:</label><br>
-    <input type="text" id="textbox" name="textbox"><br><br>
-    <input type="submit" value="Send to Storage">
-  </form>
+    <script>
+        // Function to capture photo and send it to the server
+        function captureAndSendPhoto() {
+            // Capture the photo from the camera stream
+            const videoElement = document.getElementById('video');
+            const canvasElement = document.createElement('canvas');
+            const context = canvasElement.getContext('2d');
+            canvasElement.width = videoElement.videoWidth;
+            canvasElement.height = videoElement.videoHeight;
+            context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+            
+            // Convert the photo to a blob
+            canvasElement.toBlob((blob) => {
+                // Create a FormData object and append the photo
+                const formData = new FormData();
+                formData.append('photo', blob, 'captured_photo.jpg');
+
+                // Send the FormData to the server
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                }).then((response) => {
+                    console.log('Photo sent to server');
+                }).catch((error) => {
+                    console.error('Error sending photo:', error);
+                });
+            }, 'image/jpeg');
+        }
+
+        // Function to start the camera stream
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((stream) => {
+                    const videoElement = document.getElementById('video');
+                    videoElement.srcObject = stream;
+                    videoElement.play();
+                })
+                .catch((error) => {
+                    console.error('Error accessing camera:', error);
+                });
+        }
+
+        // Call the startCamera function when the page loads
+        window.onload = function() {
+            startCamera();
+        };
+    </script>
+
+    <h1>Camera Capture</h1>
+    <video id="video" width="640" height="480"></video>
+    <button onclick="captureAndSendPhoto()">Capture and Send Photo</button>
 </body>
 </html>
