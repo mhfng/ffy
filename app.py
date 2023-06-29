@@ -1,23 +1,28 @@
-
-from flask import Flask
-import telegram
-import sched
-import time
-import os
+from flask import Flask, render_template, request
+import pandas as pd
 
 app = Flask(__name__)
-bot = telegram.Bot(token='5412336519:AAH-HGiiJJ-AZE3D5FF9457pJACcT-jbqQg')
 
-def send_message():
-    chat_id = '373715044'
-    message = 'Hello, this is a scheduled message!'
-    bot.send_message(chat_id=chat_id, text=message)
+@app.route('/', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        # Get the uploaded file from the request
+        file = request.files['file']
+        
+        # Read the Excel file into a pandas DataFrame
+        df = pd.read_excel(file)
+        
+        # Generate the pivot table
+        pivot_table = df.pivot_table(index='Category', columns='Month', values='Sales', aggfunc='sum')
+        
+        # Convert the pivot table to HTML
+        pivot_table_html = pivot_table.to_html()
+        
+        # Render the HTML template and pass the pivot table HTML to it
+        return render_template('pivot_table.html', pivot_table=pivot_table_html)
+    
+    # Render the file upload form if no file is uploaded
+    return render_template('upload.html')
 
-def schedule_message():
-    s.enter(3 * 60 * 60, 1, schedule_message)
-    send_message()
-
-s = sched.scheduler(time.time, time.sleep)
-schedule_message()
-s.run()
-
+if __name__ == '__main__':
+    app.run()
